@@ -1,29 +1,81 @@
-# Agentic Design Patterns
+# 🤖 Agentic Design Patterns
 
-> **21 Patterns · 424 Pages · Antonio Gulli**  
-> A consumable reference distilled from the full book — summaries, cheat sheets, and implementation guides.
+<p align="center">
+  <img src="https://img.shields.io/badge/Patterns-21-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Pages-424-green?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Author-Antonio%20Gulli-purple?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Frameworks-LangChain%20%7C%20CrewAI%20%7C%20Google%20ADK-orange?style=for-the-badge" />
+</p>
+
+> A consumable reference distilled from *Agentic Design Patterns* by Antonio Gulli (424 pages).  
+> Use the README to orient yourself. Click into any pattern for the full cheat sheet.
 
 ---
 
 ## 📖 About the Book
 
-*Agentic Design Patterns* is a practical, developer-focused handbook for building autonomous AI systems that perceive, plan, act, and adapt. It distills 21 reusable design patterns and pairs each with runnable code examples on popular canvases (LangChain/LangGraph, CrewAI, Google ADK). The emphasis is hands-on: pattern intent, real-world use cases, implementation notes, and runnable snippets so you can apply each pattern directly to your products.
+*Agentic Design Patterns* is a hands-on handbook for engineers and architects building autonomous AI systems. It distills 21 reusable patterns — from prompt pipelines to multi-agent coordination to safety guardrails — and pairs each with runnable code examples in LangChain/LangGraph, CrewAI, and Google ADK.
 
-The book targets engineers, architects, and technical product builders who need to move beyond single-prompt LLM usage into robust agentic systems. By the end you'll be able to (1) select appropriate patterns for a problem, (2) implement them on an agent framework, and (3) build more reliable, auditable, and maintainable agents.
+The book's thesis: raw LLM calls are unreliable at scale. Patterns are how you make agents predictable, maintainable, and production-ready.
 
 ---
 
 ## 🤖 What Makes an AI System an Agent?
 
-An agent is a goal-oriented software entity that perceives its environment, reasons about objectives, and executes actions (often via tools/APIs) with some autonomy, memory, and the ability to communicate and adapt.
+An agent is a goal-oriented software entity that perceives its environment, reasons about objectives, executes actions via tools or APIs, and adapts from feedback.
 
-The five-step agent loop:
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                      THE 5-STEP AGENT LOOP                          │
+│                                                                     │
+│   ┌──────────┐    ┌──────────────────┐    ┌─────────┐              │
+│   │  PERCEIVE │───▶│ GOAL ASSESSMENT  │───▶│  PLAN   │              │
+│   │          │    │                  │    │         │              │
+│   │ Ingest   │    │ Interpret        │    │ Generate│              │
+│   │ inputs & │    │ objectives &     │    │ ordered │              │
+│   │ API state│    │ constraints      │    │ steps   │              │
+│   └──────────┘    └──────────────────┘    └────┬────┘              │
+│                                                │                   │
+│   ┌──────────────────────┐    ┌───────────────▼──────────┐        │
+│   │   OBSERVE & LEARN    │◀───│    ACT / EXECUTE         │        │
+│   │                      │    │                          │        │
+│   │ Update memory/state  │    │ Call tools, services,    │        │
+│   │ Reflect & adapt      │    │ or perform actions       │        │
+│   └──────────────────────┘    └──────────────────────────┘        │
+└─────────────────────────────────────────────────────────────────────┘
+```
 
-1. **Perceive** — ingest inputs and sensor/API state
-2. **Goal Assessment** — interpret objectives and constraints
-3. **Plan** — generate a concrete sequence of steps or subtasks
-4. **Act / Execute** — call tools, services, or perform actions
-5. **Observe & Learn** — capture results, update memory/state, reflect and adapt
+---
+
+## 🗺️ Pattern Relationships
+
+```
+                        ┌─────────────────────────────────────────────┐
+                        │           FOUNDATION PATTERNS               │
+                        │                                             │
+                        │  Prompt Chaining → Routing → Planning       │
+                        │         ↕              ↕                    │
+                        │  Parallelization   Reflection               │
+                        │         ↕              ↕                    │
+                        │    Multi-Agent  ←  Tool Use                 │
+                        └──────────────┬──────────────────────────────┘
+                                       │
+              ┌───────────────────────▼────────────────────────┐
+              │                 STATE LAYER                     │
+              │  Memory Management · MCP · Learning · Goals     │
+              └───────────────────────┬────────────────────────┘
+                                      │
+              ┌───────────────────────▼────────────────────────┐
+              │               RELIABILITY LAYER                 │
+              │   Exception Handling · Human-in-Loop · RAG      │
+              └───────────────────────┬────────────────────────┘
+                                      │
+              ┌───────────────────────▼────────────────────────┐
+              │                ADVANCED LAYER                   │
+              │  A2A · Resources · Reasoning · Guardrails       │
+              │     Evaluation · Prioritization · Exploration   │
+              └────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -31,83 +83,141 @@ The five-step agent loop:
 
 | # | Pattern | Part | One-Liner |
 |---|---------|------|-----------|
-| 1 | [Prompt Chaining](patterns/01-prompt-chaining.md) | Core | Chain LLM calls in a pipeline where each output feeds the next |
-| 2 | [Routing](patterns/02-routing.md) | Core | Dispatch requests to the best specialist model, agent, or tool |
+| 1 | [Prompt Chaining](patterns/01-prompt-chaining.md) | Core | Chain LLM calls so each output feeds the next |
+| 2 | [Routing](patterns/02-routing.md) | Core | Dispatch requests to the best specialist model or agent |
 | 3 | [Parallelization](patterns/03-parallelization.md) | Core | Run independent subtasks concurrently and merge results |
-| 4 | [Reflection](patterns/04-reflection.md) | Core | Let the agent critique and iteratively refine its own outputs |
+| 4 | [Reflection](patterns/04-reflection.md) | Core | Let the agent critique and iteratively improve its outputs |
 | 5 | [Tool Use](patterns/05-tool-use.md) | Core | Give the agent deterministic external capabilities |
 | 6 | [Planning](patterns/06-planning.md) | Core | Generate an explicit, executable plan before acting |
-| 7 | [Multi-Agent Collaboration](patterns/07-multi-agent.md) | Core | Compose specialized agents to solve complex tasks together |
-| 8 | [Memory Management](patterns/08-memory-management.md) | State & Learning | Manage short-term and long-term memory across sessions |
-| 9 | [Learning and Adaptation](patterns/09-learning-adaptation.md) | State & Learning | Continuously improve from interaction data and feedback |
-| 10 | [Model Context Protocol (MCP)](patterns/10-mcp.md) | State & Learning | Standardize how LLMs discover and call external resources |
-| 11 | [Goal Setting and Monitoring](patterns/11-goal-setting.md) | State & Learning | Define, track, and revise agent objectives dynamically |
-| 12 | [Exception Handling and Recovery](patterns/12-exception-handling.md) | Reliability | Detect failures and restore stable operation gracefully |
+| 7 | [Multi-Agent Collaboration](patterns/07-multi-agent.md) | Core | Compose specialized agents to solve complex tasks |
+| 8 | [Memory Management](patterns/08-memory-management.md) | State | Manage short-term context and long-term persistence |
+| 9 | [Learning & Adaptation](patterns/09-learning-adaptation.md) | State | Continuously improve from interaction data and feedback |
+| 10 | [Model Context Protocol (MCP)](patterns/10-mcp.md) | State | Standardize how LLMs discover and call external resources |
+| 11 | [Goal Setting & Monitoring](patterns/11-goal-setting.md) | State | Define, track, and revise agent objectives dynamically |
+| 12 | [Exception Handling](patterns/12-exception-handling.md) | Reliability | Detect failures and restore stable operation |
 | 13 | [Human-in-the-Loop](patterns/13-human-in-the-loop.md) | Reliability | Gate high-risk decisions on targeted human judgment |
-| 14 | [Knowledge Retrieval (RAG)](patterns/14-rag.md) | Reliability | Ground generation in retrieved, up-to-date external knowledge |
-| 15 | [Inter-Agent Communication (A2A)](patterns/15-a2a-inter-agent.md) | Advanced | Standardize messaging and discovery between heterogeneous agents |
-| 16 | [Resource-Aware Optimization](patterns/16-resource-optimization.md) | Advanced | Adapt to cost, latency, and compute constraints dynamically |
-| 17 | [Reasoning Techniques](patterns/17-reasoning-techniques.md) | Advanced | Apply CoT, ToT, self-consistency to improve multi-step reasoning |
-| 18 | [Guardrails / Safety Patterns](patterns/18-guardrails-safety.md) | Advanced | Constrain agent behavior with layered safety architecture |
-| 19 | [Evaluation and Monitoring](patterns/19-evaluation-monitoring.md) | Advanced | Continuously measure correctness, cost, safety in production |
-| 20 | [Prioritization](patterns/20-prioritization.md) | Advanced | Decide what the agent works on first under resource constraints |
-| 21 | [Exploration and Discovery](patterns/21-exploration-discovery.md) | Advanced | Let agents actively seek new information while managing risk |
+| 14 | [Knowledge Retrieval (RAG)](patterns/14-rag.md) | Reliability | Ground generation in retrieved, up-to-date knowledge |
+| 15 | [Inter-Agent Comms (A2A)](patterns/15-a2a-inter-agent.md) | Advanced | Standardize messaging between heterogeneous agents |
+| 16 | [Resource Optimization](patterns/16-resource-optimization.md) | Advanced | Adapt to cost, latency, and compute constraints |
+| 17 | [Reasoning Techniques](patterns/17-reasoning-techniques.md) | Advanced | CoT, ToT, self-consistency for multi-step reasoning |
+| 18 | [Guardrails / Safety](patterns/18-guardrails-safety.md) | Advanced | Layered safety architecture for production agents |
+| 19 | [Evaluation & Monitoring](patterns/19-evaluation-monitoring.md) | Advanced | Measure correctness, cost, and safety continuously |
+| 20 | [Prioritization](patterns/20-prioritization.md) | Advanced | Decide what the agent works on first |
+| 21 | [Exploration & Discovery](patterns/21-exploration-discovery.md) | Advanced | Actively seek new information while managing risk |
 
 ---
 
-## 📦 Part One: Core Agentic Patterns (Ch. 1–7)
+## 🎯 Patterns by Use Case
+
+Not sure which pattern to reach for? Start here.
+
+### 🏗️ "I'm building something new"
+| Goal | Start With |
+|------|-----------|
+| Simple multi-step task | [Prompt Chaining](patterns/01-prompt-chaining.md) |
+| Different requests need different handling | [Routing](patterns/02-routing.md) |
+| Big task that needs a blueprint | [Planning](patterns/06-planning.md) |
+| Need external data or API calls | [Tool Use](patterns/05-tool-use.md) |
+| Want to analyze multiple documents fast | [Parallelization](patterns/03-parallelization.md) |
+
+### 🔒 "I'm making it production-ready"
+| Goal | Start With |
+|------|-----------|
+| Handle API failures gracefully | [Exception Handling](patterns/12-exception-handling.md) |
+| Add safety filters | [Guardrails / Safety](patterns/18-guardrails-safety.md) |
+| Know if it's working | [Evaluation & Monitoring](patterns/19-evaluation-monitoring.md) |
+| Escalate edge cases to a human | [Human-in-the-Loop](patterns/13-human-in-the-loop.md) |
+| Reduce hallucinations with real data | [RAG](patterns/14-rag.md) |
+
+### 🧠 "I'm improving quality"
+| Goal | Start With |
+|------|-----------|
+| Outputs aren't good enough | [Reflection](patterns/04-reflection.md) |
+| Need better multi-step reasoning | [Reasoning Techniques](patterns/17-reasoning-techniques.md) |
+| Agent should remember context | [Memory Management](patterns/08-memory-management.md) |
+| System should improve over time | [Learning & Adaptation](patterns/09-learning-adaptation.md) |
+| Multiple specialists would do better | [Multi-Agent Collaboration](patterns/07-multi-agent.md) |
+
+### 💰 "I'm optimizing for cost/scale"
+| Goal | Start With |
+|------|-----------|
+| Reduce latency or API spend | [Resource Optimization](patterns/16-resource-optimization.md) |
+| Triage what gets compute first | [Prioritization](patterns/20-prioritization.md) |
+| Share tools across multiple agents | [MCP](patterns/10-mcp.md) |
+| Connect agents from different systems | [A2A](patterns/15-a2a-inter-agent.md) |
+| Track long-running goals | [Goal Setting & Monitoring](patterns/11-goal-setting.md) |
+
+### 🚀 "I'm going advanced"
+| Goal | Start With |
+|------|-----------|
+| Agent needs to find unknowns | [Exploration & Discovery](patterns/21-exploration-discovery.md) |
+| Connect to third-party agents | [A2A](patterns/15-a2a-inter-agent.md) |
+| Balance cost vs. accuracy dynamically | [Resource Optimization](patterns/16-resource-optimization.md) |
+| Agent must work across frameworks | [MCP](patterns/10-mcp.md) |
+
+---
+
+## 📦 Part One: Core Patterns (Ch. 1–7)
 
 Foundational patterns every agentic system needs.
 
-- [Ch. 1 — Prompt Chaining](patterns/01-prompt-chaining.md) — sequential pipelines where each LLM step feeds the next
-- [Ch. 2 — Routing](patterns/02-routing.md) — intelligent dispatch to the right specialist
-- [Ch. 3 — Parallelization](patterns/03-parallelization.md) — concurrent execution with deterministic merge
-- [Ch. 4 — Reflection](patterns/04-reflection.md) — producer/critic loop for self-improvement
-- [Ch. 5 — Tool Use](patterns/05-tool-use.md) — external APIs, search, databases, calculators
-- [Ch. 6 — Planning](patterns/06-planning.md) — generate then execute structured plans
-- [Ch. 7 — Multi-Agent Collaboration](patterns/07-multi-agent.md) — orchestrate specialized agents
+| | Pattern | Summary |
+|-|---------|---------|
+| 1 | [Prompt Chaining](patterns/01-prompt-chaining.md) | Pipeline where each LLM output is the next step's input |
+| 2 | [Routing](patterns/02-routing.md) | Smart dispatch to the right specialist |
+| 3 | [Parallelization](patterns/03-parallelization.md) | Concurrent execution with deterministic merge |
+| 4 | [Reflection](patterns/04-reflection.md) | Producer/Critic loop for iterative self-improvement |
+| 5 | [Tool Use](patterns/05-tool-use.md) | Ground agents in external APIs, search, databases |
+| 6 | [Planning](patterns/06-planning.md) | Generate structured plans, then execute and replan |
+| 7 | [Multi-Agent](patterns/07-multi-agent.md) | Orchestrate specialized agents with defined roles |
 
 ---
 
 ## 🧠 Part Two: State & Learning (Ch. 8–11)
 
-Patterns for persistence, adaptation, and goal-oriented behavior.
+Patterns for persistence, adaptation, and goal tracking.
 
-- [Ch. 8 — Memory Management](patterns/08-memory-management.md) — short-term context + long-term vector storage
-- [Ch. 9 — Learning and Adaptation](patterns/09-learning-adaptation.md) — fine-tuning, RL, feedback loops
-- [Ch. 10 — Model Context Protocol (MCP)](patterns/10-mcp.md) — open protocol for tool/resource interoperability
-- [Ch. 11 — Goal Setting and Monitoring](patterns/11-goal-setting.md) — track and revise objectives at runtime
+| | Pattern | Summary |
+|-|---------|---------|
+| 8 | [Memory Management](patterns/08-memory-management.md) | Short-term context + long-term vector storage |
+| 9 | [Learning & Adaptation](patterns/09-learning-adaptation.md) | Fine-tuning, RL, and feedback loops |
+| 10 | [MCP](patterns/10-mcp.md) | Open protocol for tool/resource interoperability |
+| 11 | [Goal Setting](patterns/11-goal-setting.md) | Track and revise objectives at runtime |
 
 ---
 
-## 🛡️ Part Three: Reliability Patterns (Ch. 12–14)
+## 🛡️ Part Three: Reliability (Ch. 12–14)
 
 Making agents resilient and trustworthy.
 
-- [Ch. 12 — Exception Handling and Recovery](patterns/12-exception-handling.md) — retries, fallbacks, rollbacks, escalation
-- [Ch. 13 — Human-in-the-Loop](patterns/13-human-in-the-loop.md) — gating, review UIs, correction feedback
-- [Ch. 14 — Knowledge Retrieval (RAG)](patterns/14-rag.md) — retrieval stack, chunking, vector search, citations
+| | Pattern | Summary |
+|-|---------|---------|
+| 12 | [Exception Handling](patterns/12-exception-handling.md) | Retries, fallbacks, rollbacks, escalation |
+| 13 | [Human-in-the-Loop](patterns/13-human-in-the-loop.md) | Gating, review UIs, correction feedback |
+| 14 | [RAG](patterns/14-rag.md) | Retrieval stack, chunking, vector search, citations |
 
 ---
 
 ## 🚀 Part Four: Advanced Patterns (Ch. 15–21)
 
-Scaling, safety, and optimization for production agents.
+Scaling, safety, and optimization for production.
 
-- [Ch. 15 — Inter-Agent Communication (A2A)](patterns/15-a2a-inter-agent.md) — open protocol for multi-agent ecosystems
-- [Ch. 16 — Resource-Aware Optimization](patterns/16-resource-optimization.md) — cost/latency-adaptive routing and execution
-- [Ch. 17 — Reasoning Techniques](patterns/17-reasoning-techniques.md) — CoT, ToT, self-consistency, verifier agents
-- [Ch. 18 — Guardrails / Safety](patterns/18-guardrails-safety.md) — defense-in-depth safety architecture
-- [Ch. 19 — Evaluation and Monitoring](patterns/19-evaluation-monitoring.md) — model CI, telemetry, regression detection
-- [Ch. 20 — Prioritization](patterns/20-prioritization.md) — schedulers, preemption, budget caps
-- [Ch. 21 — Exploration and Discovery](patterns/21-exploration-discovery.md) — curiosity-driven agents with safe exploration
+| | Pattern | Summary |
+|-|---------|---------|
+| 15 | [A2A](patterns/15-a2a-inter-agent.md) | Open protocol for heterogeneous agent ecosystems |
+| 16 | [Resource Optimization](patterns/16-resource-optimization.md) | Cost/latency-adaptive routing and execution |
+| 17 | [Reasoning Techniques](patterns/17-reasoning-techniques.md) | CoT, ToT, self-consistency, verifier agents |
+| 18 | [Guardrails](patterns/18-guardrails-safety.md) | Defense-in-depth safety architecture |
+| 19 | [Evaluation & Monitoring](patterns/19-evaluation-monitoring.md) | Model CI, telemetry, regression detection |
+| 20 | [Prioritization](patterns/20-prioritization.md) | Schedulers, preemption, budget caps |
+| 21 | [Exploration & Discovery](patterns/21-exploration-discovery.md) | Curiosity-driven agents with safe exploration |
 
 ---
 
 ## 📎 Appendices
 
-- [Appendix A — Advanced Prompting Techniques](appendices/A-advanced-prompting.md) — few-shot, CoT, ReAct, output schemas
-- [Appendices B–G — Frameworks, Tools, CLI, Reasoning Engines, Coding Agents](appendices/B-G-overview.md)
+- [Appendix A — Advanced Prompting Techniques](appendices/A-advanced-prompting.md)
+- [Appendices B–G — Frameworks, GUI Agents, CLI, Reasoning Engines, Coding Agents](appendices/B-G-overview.md)
 
 ---
 
@@ -123,4 +233,7 @@ Scaling, safety, and optimization for production agents.
 
 ---
 
-*Based on "Agentic Design Patterns" by Antonio Gulli (424 pages). All author royalties donated to [Save the Children](https://www.savethechildren.org).*
+<p align="center">
+  <i>Based on <strong>"Agentic Design Patterns"</strong> by Antonio Gulli (424 pages).<br>
+  All author royalties donated to <a href="https://www.savethechildren.org">Save the Children</a>.</i>
+</p>
